@@ -1,0 +1,5 @@
+# torch==1.7.0
+# torchvision==0.8.1
+timm==0.4.12
+einops==0.7.0
+munch==4.0.0

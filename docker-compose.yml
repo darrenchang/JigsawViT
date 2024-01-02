@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  nazar:
+    restart: always
+    image: jigsaw-vit-train
+    build:
+      context: .
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['${GPU_IDS:-0}']
+              capabilities: [gpu]
+    ipc: host
+    volumes:
+      - ./adversarial-examples/:/vit/adversarial-examples
+      - ./imagenet/:/vit/imagenet
+      - models-vit:/vit/data:ro
+      - ./noisy-label/:/vit/noisy-label
+
+# Mount SMB using docker volumes so the container can be more secure
+volumes:
+  models-vit:
+    driver_opts:
+      type: cifs
+      o: "addr=${NAS},username=${SMB_USERNAME},password=${SMB_PASSWORD}"
+      device: "//${NAS}/models/vit"
