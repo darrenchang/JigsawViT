@@ -153,14 +153,14 @@ RUN mkdir "$(pwd)/opencv-${OPENCV_VERSION}/build" && \
 
 # Install pytorch
 WORKDIR /pytorch
-ARG PYTORCH_BUILD_VERSION=1.13.1
-ARG TORCHVISION_VERSION=v0.14.1
+ARG PYTORCH_BUILD_VERSION=1.11.0+cu115
+ARG TORCHVISION_VERSION=0.12.0+cu115
 ARG FORCE_CUDA=1
 ARG TORCH_CUDA_ARCH_LIST="6.0+PTX;7.0+PTX;8.0+PTX"
 RUN python3 -m pip install \
     torch==${PYTORCH_BUILD_VERSION} \
     torchvision==${TORCHVISION_VERSION} \
-    --index-url https://download.pytorch.org/whl/cu117
+    -f https://download.pytorch.org/whl/torch_stable.html
 
 # Install requirements
 WORKDIR /tmp
