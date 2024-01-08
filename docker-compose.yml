@@ -17,13 +17,20 @@ services:
     volumes:
       - ./adversarial-examples/:/vit/adversarial-examples
       - ./imagenet/:/vit/imagenet
-      - models-vit:/vit/data:ro
       - ./noisy-label/:/vit/noisy-label
+      - ./scripts/:/vit/scripts
+      - models-vit-dataset:/vit/jigsaw-dataset:ro
+      - models-vit-output:/vit/jigsaw-output
 
 # Mount SMB using docker volumes so the container can be more secure
 volumes:
-  models-vit:
+  models-vit-dataset:
     driver_opts:
       type: cifs
       o: "addr=${NAS},username=${SMB_USERNAME},password=${SMB_PASSWORD}"
-      device: "//${NAS}/models/vit"
+      device: "//${NAS}/models/vit/jigsaw-dataset"
+  models-vit-output:
+    driver_opts:
+      type: cifs
+      o: "addr=${NAS},username=${SMB_USERNAME},password=${SMB_PASSWORD}"
+      device: "//${NAS}/models/vit/jigsaw"
